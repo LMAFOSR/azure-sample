@@ -7,6 +7,9 @@ import models from './api/models';
 import styles from './api/styles';
 import fullyConfigured from './api/fullyConfigured';
 
+import { getX, retrieveX, buildX } from './generateReport';
+import { buildPDF } from './pdfBuilder';
+
 const app = express();
 app.use(bodyParser.json({limit: '50mb'}));
 const port = process.env.PORT || 8081;
@@ -38,6 +41,9 @@ app.get('/models/:year/:divisionId', [models, errorCheck]);
 app.get('/styles/:modelId', [styles, errorCheck]);
 
 app.get('/fullyConfigured/:styleId', [fullyConfigured, errorCheck]);
+
+// GENERATE PDF HERE
+app.get('/styleId/:styleId/priceSetting/:priceSetting/orderAvailability/:orderAvailability', [getX, retrieveX, buildX, buildPDF, errorCheck]);
 
 app.listen(port, () => {
   console.log(`I am running on ${port}`)
