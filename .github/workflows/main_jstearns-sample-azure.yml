@@ -25,6 +25,9 @@ jobs:
         npm ci
         npm run build --if-present
         npm run test --if-present
+        env:
+          ACCOUNTNUMBER: ${{ secrets.ACCOUNTNUMBER }}
+          ACCOUNTSECRET: ${{ secrets.ACCOUNTSECRET }}        
 
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
