@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 
 import years from './api/years';
 import divisions from './api/divisions';
@@ -13,7 +14,11 @@ import {getStyleIdPost, getStyleIdGet, getX, buildDocument, sendDocument, retrie
 import { buildPDF } from './pdfBuilder';
 
 const app = express();
+
 app.use(bodyParser.json({limit: '50mb'}));
+app.disable('x-powered-by');
+app.use(cors());
+
 const port = process.env.PORT || 8081;
 
 export const errorCheck = (err, req, res, next) => {
