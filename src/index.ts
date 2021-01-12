@@ -2,6 +2,10 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 import years from './api/years';
+import divisions from './api/divisions';
+import models from './api/models';
+import styles from './api/styles';
+import fullyConfigured from './api/fullyConfigured';
 
 const app = express();
 app.use(bodyParser.json({limit: '50mb'}));
@@ -26,6 +30,14 @@ app.get('/', (req, res) => {
 });
 
 app.get('/years', [years, errorCheck]);
+
+app.get('/divisions/:year', [divisions, errorCheck]);
+
+app.get('/models/:year/:divisionId', [models, errorCheck]);
+
+app.get('/styles/:modelId', [styles, errorCheck]);
+
+app.get('/fullyConfigured/:styleId', [fullyConfigured, errorCheck]);
 
 app.listen(port, () => {
   console.log(`I am running on ${port}`)
