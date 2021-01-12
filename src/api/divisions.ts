@@ -1,4 +1,4 @@
-import divisions from '../webServices/divsions';
+import divisions from '../webServices/divisions';
 
 export default (req, res, next) => {
     return divisions(undefined, req.params.year)
@@ -6,4 +6,4 @@ export default (req, res, next) => {
             res.send(results);
         })
         .catch((error) => next(error));
-}
+};

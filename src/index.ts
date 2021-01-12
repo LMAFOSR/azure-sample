@@ -6,8 +6,10 @@ import divisions from './api/divisions';
 import models from './api/models';
 import styles from './api/styles';
 import fullyConfigured from './api/fullyConfigured';
+import toggleOption, {translatePost as translateToggleOption} from './api/toggleOption';
+import getConfiguration, {translatePost as translateGetConfiguration} from './api/getConfiguration';
 
-import { getX, retrieveX, buildX } from './generateReport';
+import {getStyleIdPost, getStyleIdGet, getX, buildDocument, sendDocument, retrieveClient, retrieveX, buildX} from './generateReport/index';
 import { buildPDF } from './pdfBuilder';
 
 const app = express();
@@ -42,8 +44,22 @@ app.get('/styles/:modelId', [styles, errorCheck]);
 
 app.get('/fullyConfigured/:styleId', [fullyConfigured, errorCheck]);
 
+app.get('/fullyConfiguredv2/:styleId/:orderAvailibility/:priceSetting', [fullyConfigured, errorCheck]);
+
+app.get('/toggleOption/:configurationState/:chromeOptionCode/:returnDeltaConfiguration', [toggleOption, errorCheck]);
+
+app.get('/getConfiguration/:configurationState/:priceSetting', [getConfiguration, errorCheck]);
+
 // GENERATE PDF HERE
 app.get('/styleId/:styleId/priceSetting/:priceSetting/orderAvailability/:orderAvailability', [getX, retrieveX, buildX, buildPDF, errorCheck]);
+
+app.use('/generatePDF', [buildPDF, errorCheck]);
+
+app.use('/generateReport', [getStyleIdPost, retrieveClient, buildDocument, buildPDF, errorCheck]);
+
+// GET THE DOC DEFINITION FOR WHAT CREATES THE PDF
+
+app.get('/docDefinition/styleId/:styleId/priceSetting/:priceSetting/orderAvailability/:orderAvailability', [getStyleIdGet, retrieveClient, buildDocument, sendDocument, errorCheck]);
 
 app.listen(port, () => {
   console.log(`I am running on ${port}`)
